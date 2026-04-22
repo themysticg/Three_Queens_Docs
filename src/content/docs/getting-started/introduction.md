@@ -24,4 +24,4 @@ Welcome to the Three Queens documentation. Every script we publish has its own s
 
 Anything inside `<>` is a placeholder you should replace, e.g. `<your-server-ip>`. Anything inside backticks is a literal value, file name, or command.
 
-Ready? [Head to Installation →](/docs/getting-started/installation/)
+Ready? [Head to Installation →](/getting-started/installation/)

@@ -1,11 +1,8 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
-// Served at http://<server>/docs/ via XAMPP. If you later move to a subdomain
-// (e.g. docs.three-queens.com), drop `base` and point `site` at that origin.
 export default defineConfig({
-  site: 'http://localhost',
-  base: '/docs',
+  site: 'http://docs.threequeens.net',
   outDir: './dist',
   integrations: [
     starlight({

@@ -42,7 +42,7 @@ Start the server and watch the console. You should see:
 [     script:tq_example] Resource loaded, version x.y.z
 ```
 
-If you see an error instead, jump to the [Overview](/docs/example-script/overview/) page of the specific script — every script documents its own troubleshooting section there.
+If you see an error instead, jump to the [Overview](/example-script/overview/) page of the specific script — every script documents its own troubleshooting section there.
 
 :::note
 Most scripts support live config reload via `refresh` + `ensure`. You rarely need a full server restart after editing `config.lua`.
