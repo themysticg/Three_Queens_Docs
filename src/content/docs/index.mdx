@@ -1,0 +1,44 @@
+---
+title: Three Queens Docs
+description: Documentation for Three Queens FiveM scripts.
+template: splash
+hero:
+  tagline: Setup, configuration, and API references for every Three Queens script.
+  actions:
+    - text: Get started
+      link: /docs/getting-started/introduction/
+      icon: right-arrow
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/themysticg
+      icon: external
+---
+
+import ScriptCard from '../../components/ScriptCard.astro';
+import ScriptGrid from '../../components/ScriptGrid.astro';
+
+<ScriptGrid title="Scripts">
+  <ScriptCard
+    title="Example Script"
+    description="A worked example showing configuration, events, and exports. Copy this pattern for every new script you document."
+    href="/docs/example-script/overview/"
+    badge="Template"
+  />
+  {/* ── Add your real scripts below, one <ScriptCard> per script ───────────
+      Drop a 16:9 screenshot into public/scripts/ and pass its path to `image`:
+      <ScriptCard
+        title="tq_jobs"
+        description="Job centre — apply, clock in, collect wages."
+        href="/docs/tq-jobs/overview/"
+        image="/docs/scripts/tq_jobs_preview.png"
+      />
+  ─────────────────────────────────────────────────────────────────────── */}
+</ScriptGrid>
+
+<ScriptGrid title="Tools">
+  <ScriptCard
+    title="Image Uploader"
+    description="Host screenshots and short video clips for use in scripts and docs. Returns a public URL per file."
+    href="/docs/tools/image-uploader/"
+  />
+</ScriptGrid>

@@ -1,0 +1,42 @@
+/* Three Queens — professional dark theme.
+   Keeps the brand warmth (dark near-blacks, crimson accent) without
+   the aggressiveness of bright red. Accent reads as intentional branding,
+   not an alarm. */
+
+/* ── Accent (both themes) ─────────────────────────────────────────────── */
+:root {
+  --sl-color-accent-low:  #3b0d0d;   /* deep crimson — accent chip backgrounds  */
+  --sl-color-accent:      #c0392b;   /* crimson — links, active states           */
+  --sl-color-accent-high: #f5c6c6;   /* soft blush — text on dark accent areas   */
+}
+
+/* ── Dark mode (primary experience) ──────────────────────────────────── */
+:root[data-theme='dark'] {
+  /* Backgrounds */
+  --sl-color-bg:          #141010;   /* near-black, warm undertone               */
+  --sl-color-bg-nav:      #0f0c0c;   /* slightly darker for top bar              */
+  --sl-color-bg-sidebar:  #0f0c0c;   /* sidebar matches nav                      */
+
+  /* Interactive / accent */
+  --sl-color-text-accent: #e05c5c;   /* muted rose-red for inline links          */
+
+  /* Dividers */
+  --sl-color-hairline-light: #2b1f1f;
+  --sl-color-hairline-shade: #1c1414;
+
+  /* Muted gray (sidebar labels, meta text) — warm-tinted */
+  --sl-color-gray-5: #6b5b5b;
+  --sl-color-gray-6: #3d2e2e;
+}
+
+/* ── Light mode ───────────────────────────────────────────────────────── */
+:root[data-theme='light'] {
+  --sl-color-accent:      #a12020;   /* darker crimson on white — stays legible  */
+  --sl-color-accent-high: #7a1515;
+  --sl-color-text-accent: #a12020;
+}
+
+/* Slightly tighter sidebar type for long script lists */
+.sidebar-content {
+  font-size: 0.9rem;
+}

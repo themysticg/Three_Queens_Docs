@@ -1,0 +1,57 @@
+---
+title: Example Script — Exports
+description: Client and server exports you can call from your own resources.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Every Three Queens script exposes a small, stable API. Signatures won't break inside the same major version.
+
+## Summary
+
+| Export          | Side   | Returns         | Purpose                              |
+| --------------- | ------ | --------------- | ------------------------------------ |
+| `getPayout`     | shared | `number`        | Current configured payout.           |
+| `addPoint`      | server | `number` (id)   | Add a delivery point at runtime.     |
+| `removePoint`   | server | `boolean`       | Remove a delivery point by id.       |
+| `onReward`      | client | event-style     | Fires when the local player is paid. |
+
+## Usage
+
+<Tabs>
+  <TabItem label="From another resource" icon="puzzle">
+    ```lua
+    local payout = exports.tq_example:getPayout()
+    print(('Current payout is $%d'):format(payout))
+
+    -- server side
+    local id = exports.tq_example:addPoint(vec3(100, 200, 30), 'Airport')
+    ```
+  </TabItem>
+  <TabItem label="Listening for rewards" icon="bell">
+    ```lua title="client.lua"
+    AddEventHandler('tq_example:onReward', function(amount)
+      -- Your UI reaction here.
+      print('Got paid', amount)
+    end)
+    ```
+  </TabItem>
+</Tabs>
+
+## Reference
+
+### `getPayout() -> number`
+Returns the current `Config.Payout`. Safe to call from either side.
+
+### `addPoint(coords: vec3, label?: string) -> number`
+**Server only.** Appends a new delivery point and returns its id. Persists only for the lifetime of the resource — write to `Config.Points` if you need it permanent.
+
+### `removePoint(id: number) -> boolean`
+**Server only.** Removes the point with that id. Returns `true` on success, `false` if the id is unknown.
+
+### `onReward` event
+**Client event.** Fired with `(amount: number)` whenever the local player receives a payout. Subscribe via `AddEventHandler`.
+
+:::caution
+Exports are resolved by resource name. If you rename the folder from `tq_example`, every caller must update to `exports.<new_name>:...`.
+:::

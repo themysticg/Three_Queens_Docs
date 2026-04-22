@@ -1,0 +1,122 @@
+---
+title: Example Script — Overview
+description: A feature-showcase page demonstrating code blocks, tabs, admonitions, video, and everything else you can use when documenting a real script.
+---
+
+import { Tabs, TabItem, Aside, Steps, LinkCard, CardGrid } from '@astrojs/starlight/components';
+
+This page exists to show **every authoring feature** you can use when documenting a real Three Queens script. Copy the patterns below.
+
+## What it does
+
+A fictional script that rewards players for bringing specific items to a location. Good template for delivery, turn-in, or NPC interaction jobs.
+
+## Video walkthrough
+
+Replace the `src` with a URL from the Three Queens [upload site](http://localhost/upload/) — it accepts `.webm` up to 2 MB. Anything larger, use a YouTube embed instead.
+
+```mdx
+<video controls width="100%" src="https://www.youtube.com/watch?v=p-qEstMOWnQ" />
+```
+
+Or a YouTube embed:
+
+
+<iframe style="width:100%;aspect-ratio:16/9;" src="https://www.youtube.com/embed/p-qEstMOWnQ?si=lAKPaRx5unoSLhbE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+## Code — with tabs
+
+Most FiveM logic is split between **client** and **server**. Use `<Tabs>` to show them side by side:
+
+<Tabs>
+  <TabItem label="Client" icon="seti:lua">
+    ```lua title="client.lua" {3,5-7}
+    RegisterNetEvent('tq_example:reward', function(amount)
+      -- The highlighted lines show the reward flow
+      lib.notify({ title = 'Delivery', description = ('+$%d'):format(amount) })
+
+      TriggerServerEvent('tq_example:log', {
+        at = GetGameTimer(),
+        reward = amount,
+      })
+    end)
+    ```
+  </TabItem>
+  <TabItem label="Server" icon="seti:lua">
+    ```lua title="server.lua"
+    RegisterNetEvent('tq_example:log', function(payload)
+      local src = source
+      print(('[tq_example] player %d rewarded %d'):format(src, payload.reward))
+    end)
+    ```
+  </TabItem>
+  <TabItem label="SQL" icon="seti:db">
+    ```sql title="install.sql"
+    CREATE TABLE IF NOT EXISTS tq_example_log (
+      id     INT AUTO_INCREMENT PRIMARY KEY,
+      cid    VARCHAR(64) NOT NULL,
+      reward INT NOT NULL,
+      at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+    ```
+  </TabItem>
+</Tabs>
+
+## Admonitions
+
+Four built-in admonition styles — use them to flag things readers must not miss.
+
+:::note
+Informational. Use for context or background detail.
+:::
+
+:::tip[Recommended pattern]
+Use for best-practice suggestions. The heading in brackets is optional.
+:::
+
+:::caution
+Use when something will silently misbehave if ignored (e.g. wrong column type, missing dependency).
+:::
+
+:::danger[Do not do this]
+Use for actions that corrupt data, break saves, or expose credentials.
+:::
+
+## Step-by-step
+
+<Steps>
+
+1. Stop the resource.
+
+   ```sh
+   stop tq_example
+   ```
+
+2. Edit `config.lua` and change the payout:
+
+   ```lua
+   Config.Payout = 500
+   ```
+
+3. Start it again.
+
+   ```sh
+   ensure tq_example
+   ```
+
+</Steps>
+
+## Images
+
+Drop screenshots into `src/assets/` (they get optimised at build time) or link to a URL from the upload site:
+
+```md
+![Reward UI](http://localhost/upload/uploads/reward_ui.png)
+```
+
+## Related
+
+<CardGrid>
+  <LinkCard title="Configuration" href="/docs/example-script/configuration/" description="Every knob in config.lua" />
+  <LinkCard title="Exports" href="/docs/example-script/exports/" description="Client + server API surface" />
+</CardGrid>
