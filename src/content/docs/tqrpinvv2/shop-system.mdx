@@ -1,0 +1,91 @@
+---
+title: Shop System
+description: Shop configuration format, category filtering, and adding new shops.
+---
+
+## Shop configuration format
+
+```lua
+General = {
+    name    = 'Shop',
+    hideAll = false,
+    blip    = { id = 59, colour = 69, scale = 0.8 },
+    inventory = {
+        { name = 'burger',   price = 10,  metadata = { category = 'Food' } },
+        { name = 'water',    price = 10,  metadata = { category = 'Drinks' } },
+        { name = 'bandage',  price = 25,  metadata = { category = 'Medical' } },
+        { name = 'armour',   price = 300, metadata = { category = 'Equipment' } },
+    },
+    locations = {
+        vec3(25.7, -1347.3, 29.49),
+    },
+    targets = {
+        { loc = vec3(25.06, -1347.32, 29.5), length = 0.7, width = 0.5, heading = 0.0, minZ = 29.5, maxZ = 29.9, distance = 1.5 },
+    }
+}
+```
+
+### Top-level keys
+
+| Key | Description |
+| --- | --- |
+| `name` | Display name shown as the shop title |
+| `hideAll` | `true` hides all category filter tabs |
+| `blip` | Map blip config (`id`, `colour`, `scale`) — one blip per entry in `locations` |
+| `inventory` | Array of items available to buy |
+| `locations` | World coordinates for blip placement |
+| `targets` | ox_target box zone definitions — one per physical counter |
+
+### Item format
+
+```lua
+{ name = 'item_name', price = 100, metadata = { category = 'Food' } }
+```
+
+| Key | Description |
+| --- | --- |
+| `name` | Item name — must exist in `data/items.lua` |
+| `price` | Cost in your server's currency |
+| `metadata` | Any metadata written onto the purchased item. `category` is used by the shop UI for tab filtering |
+
+## Category filtering
+
+The `category` metadata key controls which tab an item appears under in the shop UI. Items without a `category` appear under "All".
+
+| Category | Typical items |
+| --- | --- |
+| `Food` | Burger, sandwich, mustard |
+| `Drinks` | Water, cola, sprunk |
+| `Medical` | Bandage, medikit |
+| `Electronics` | Phone, tablet, radio |
+| `Equipment` | Armor, parachute |
+| `Tools` | Lockpick, screwdriver |
+| `Weapons` | Firearms, melee weapons |
+| `Ammo` | Ammunition |
+
+## Adding a new shop
+
+Add a new top-level key to `data/shops.lua`:
+
+```lua
+AmmuNation = {
+    name = 'Ammu-Nation',
+    blip = { id = 110, colour = 1, scale = 0.8 },
+    inventory = {
+        { name = 'ammo_pistol',   price = 50,   metadata = { category = 'Ammo' } },
+        { name = 'weapon_pistol', price = 2500, metadata = { category = 'Weapons' } },
+    },
+    locations = {
+        vec3(22.7, -1107.9, 29.8),
+    },
+    targets = {
+        { loc = vec3(22.7, -1107.9, 29.8), length = 1.0, width = 0.5, heading = 90.0, minZ = 29.7, maxZ = 30.1, distance = 1.5 },
+    }
+}
+```
+
+Restart the resource after saving.
+
+## Source
+
+- [Shop System (GitBook)](https://tqrpinvv2.gitbook.io/tqrpinvv2/tqrpinvv2-ox-inventory-rework-v2/shop-system)

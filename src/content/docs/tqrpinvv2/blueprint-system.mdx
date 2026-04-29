@@ -1,0 +1,120 @@
+---
+title: Blueprint System
+description: How blueprints unlock recipes, how they are consumed, and how to give them to players.
+---
+
+## How blueprints work
+
+1. A `blueprint` item sits in the player's inventory with metadata identifying which recipe it unlocks.
+2. When the player crafts a blueprint-locked recipe, `consume` percentage of the blueprint's durability is subtracted.
+3. When the blueprint reaches 0 durability it is automatically removed from the inventory.
+
+A single blueprint can be used multiple times before it is consumed. At `consume = 0.05` (5% per craft) each blueprint allows 20 crafts.
+
+## Blueprint configuration
+
+In `data/crafting.lua`:
+
+```lua
+blueprints = {
+    weapon_pistol = {
+        item          = 'blueprint',
+        metadataKey   = 'blueprint',
+        metadataValue = 'weapon_pistol',
+        consume       = 0.05,
+    },
+}
+```
+
+The matching recipe on a bench:
+
+```lua
+{
+    name      = 'weapon_pistol',
+    blueprint = 'weapon_pistol',
+    xp        = { required = 36, reward = 22 },
+    ingredients = { scrapmetal = 20, WEAPON_HAMMER = 0.05 },
+    duration  = 7600,
+    count     = 1,
+}
+```
+
+## Giving a blueprint to a player
+
+### Export
+
+Use this from any other resource to give a blueprint programmatically:
+
+```lua
+exports['inventory']:giveBlueprintToPlayer(playerId, blueprintKey)
+```
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `playerId` | number | Server-side player source ID |
+| `blueprintKey` | string | Key from the `blueprints` table in `data/crafting.lua` |
+
+**Example:**
+
+```lua
+exports['inventory']:giveBlueprintToPlayer(source, 'weapon_pistol')
+```
+
+### Admin command
+
+```txt
+/giveBlueprintToPlayer [playerId] [blueprintKey]
+```
+
+**Example:**
+
+```txt
+/giveBlueprintToPlayer 5 weapon_smg
+```
+
+This gives the player with server ID `5` a blueprint for the SMG recipe.
+
+### ACE permission
+
+The admin command requires the following ACE in `server.cfg`:
+
+```txt
+add_ace group.admin command.giveBlueprintToPlayer allow
+```
+
+Replace `group.admin` with the admin group configured on your server.
+
+## Default blueprints
+
+| Blueprint key | Unlocks recipe | Crafts per blueprint |
+| --- | --- | --- |
+| `lockpick` | Lockpick | 20 |
+| `weapon_bat` | Baseball Bat | 20 |
+| `weapon_crowbar` | Crowbar | 20 |
+| `weapon_wrench` | Wrench | 20 |
+| `weapon_hatchet` | Hatchet | 20 |
+| `weapon_hammer` | Hammer | 20 |
+| `weapon_pistol` | Pistol | 20 |
+| `weapon_smg` | SMG | 20 |
+
+## Adding a new blueprint
+
+1. Add an entry to `blueprints` in `data/crafting.lua`.
+2. Add `blueprint = 'your_key'` to the matching recipe.
+3. Ensure the `blueprint` item exists in `data/items.lua`.
+4. Use the export or admin command to give blueprints to players.
+
+```lua
+blueprints = {
+    my_recipe = {
+        item          = 'blueprint',
+        metadataKey   = 'blueprint',
+        metadataValue = 'my_recipe',
+        consume       = 0.10,   -- 10% per craft = 10 crafts per blueprint
+    }
+}
+```
+
+## Source
+
+- [Blueprint System (GitBook)](https://tqrpinvv2.gitbook.io/tqrpinvv2/tqrpinvv2-ox-inventory-rework-v2/blueprint-system)

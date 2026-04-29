@@ -1,0 +1,87 @@
+---
+title: Rarity System
+description: Configure rarity tiers, assign rarity to items, and add custom tiers.
+---
+
+## Default tiers
+
+| Key | Label | Text colour | Border / glow | Animation |
+| --- | --- | --- | --- | --- |
+| `common` | Common | `#ffffff` white | `#636363` grey | None |
+| `uncommon` | Uncommon | `#84cc16` lime | `#84cc16` lime | None |
+| `rare` | Rare | `#0ea5e9` sky blue | `#0ea5e9` sky blue | None |
+| `epic` | Epic | `#c026d3` purple | `#c026d3` purple | None |
+| `legendary` | Legendary | `#eab308` gold | `#eab308` gold | Pulsing glow |
+
+## Assigning rarity to an item
+
+Add a `rarity` key to any item in `data/items.lua`:
+
+```lua
+['weapon_pistol'] = {
+    label  = 'Pistol',
+    weight = 1000,
+    stack  = false,
+    rarity = 'rare',
+}
+```
+
+Items without a `rarity` field use the `common` style by default.
+
+## Tier configuration
+
+Every visual property of every tier is editable in `data/rarity.lua`:
+
+```lua
+Levels = {
+    legendary = {
+        label      = 'Legendary',
+        text       = '#eab308',
+        color      = '#eab308',
+        background = 'radial-gradient(#00000000, #a1620725)',
+        animation  = true,
+    },
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `label` | Badge text shown in the slot |
+| `text` | CSS colour of the item name label |
+| `color` | CSS colour of the slot border glow and rarity badge |
+| `background` | Any valid CSS `background` value — gradients or solid colours |
+| `animation` | `true` enables a pulsing glow (recommended for top tier only) |
+
+## Adding custom tiers
+
+Add any new key to the `Levels` table and assign it to items:
+
+```lua
+divine = {
+    label      = 'Divine',
+    text       = '#ff0080',
+    color      = '#ff0080',
+    background = 'radial-gradient(#00000000, #ff008030)',
+    animation  = true,
+},
+```
+
+Then in `data/items.lua`:
+
+```lua
+['angel_sword'] = {
+    label  = 'Angel Sword',
+    weight = 3000,
+    rarity = 'divine',
+}
+```
+
+No other changes are required.
+
+## Disabling the rarity system
+
+Set `Enabled = false` in `data/rarity.lua`. All items will render with the plain `common` slot style regardless of their `rarity` field.
+
+## Source
+
+- [Rarity System (GitBook)](https://tqrpinvv2.gitbook.io/tqrpinvv2/tqrpinvv2-ox-inventory-rework-v2/rarity-system)

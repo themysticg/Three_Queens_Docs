@@ -1,0 +1,175 @@
+---
+title: Crafting System
+description: XP progression, blueprints, bench types, recipes, and pre-placed benches.
+---
+
+## XP system
+
+```lua
+xp = {
+    enabled       = true,
+    hideLocked    = true,
+    defaultReward = 0,
+}
+```
+
+| Key | Description |
+| --- | --- |
+| `enabled` | Master switch for the XP system |
+| `hideLocked` | `true` hides recipes the player hasn't unlocked. `false` shows them greyed out |
+| `defaultReward` | XP awarded for any recipe that does not define its own reward |
+
+Each recipe defines its own XP requirement and reward:
+
+```lua
+xp = { required = 15, reward = 12 }
+```
+
+## Blueprint system
+
+Blueprints are items that unlock specific crafting recipes. A recipe with a `blueprint` key is locked until the player has the matching blueprint item in their inventory.
+
+Each craft consumes a percentage of the blueprint's durability. When durability reaches zero the item is removed.
+
+```lua
+blueprints = {
+    weapon_pistol = {
+        item          = 'blueprint',
+        metadataKey   = 'blueprint',
+        metadataValue = 'weapon_pistol',
+        consume       = 0.05,   -- 5% per craft = 20 uses per blueprint
+    },
+}
+```
+
+For giving blueprints to players, see the [Blueprint System](/tqrpinvv2/blueprint-system/) page.
+
+## Bench types
+
+### `basic` — Basic Crafting Bench
+
+| Property | Value |
+| --- | --- |
+| Model | `prop_tool_bench02` |
+| Spawn range | 35 m |
+| Storage | 30 slots / 100,000g |
+| Placement item | `bench_basic` (returned on pickup) |
+
+All basic bench recipes are unlocked from the start (XP required = 0):
+
+`lockpick` · `bandage` · `phone` · `parachute` · `radio` · `armor_repair_kit` · `armor_plates` · `armour` · `heavyarmour` · `backpack_small` · `backpack_medium` · `backpack_large`
+
+### `advanced` — Advanced Crafting Bench
+
+| Property | Value |
+| --- | --- |
+| Model | `xm3_prop_xm3_bench_04b` |
+| Spawn range | 50 m |
+| Storage | 45 slots / 150,000g |
+| Placement item | `bench_advanced` (returned on pickup) |
+
+All advanced recipes require an XP gate and a blueprint:
+
+| Recipe | XP required | Blueprint |
+| --- | --- | --- |
+| `weapon_bat` | 15 | `weapon_bat` |
+| `weapon_crowbar` | 20 | `weapon_crowbar` |
+| `weapon_wrench` | 25 | `weapon_wrench` |
+| `weapon_hatchet` | 28 | `weapon_hatchet` |
+| `weapon_hammer` | 32 | `weapon_hammer` |
+| `weapon_pistol` | 36 | `weapon_pistol` |
+| `weapon_smg` | 48 | `weapon_smg` |
+
+## Recipe format
+
+```lua
+{
+    name        = 'lockpick',
+    ingredients = {
+        scrapmetal    = 5,
+        WEAPON_HAMMER = 0.05,   -- consumes 5% durability from a hammer tool
+    },
+    duration    = 5000,         -- craft time in milliseconds
+    count       = 2,            -- units produced per craft
+    xp          = { required = 0, reward = 5 },
+    blueprint   = 'lockpick',   -- optional — blueprint key required to unlock
+}
+```
+
+| Key | Description |
+| --- | --- |
+| `name` | Item name to produce — must exist in `data/items.lua` |
+| `ingredients` | Map of item or weapon → amount consumed. Weapons use their uppercase spawn name |
+| `duration` | Craft animation length in milliseconds |
+| `count` | How many items are produced per craft |
+| `xp.required` | Minimum XP needed to access this recipe |
+| `xp.reward` | XP awarded on successful craft |
+| `blueprint` | Blueprint key from the `blueprints` table (optional) |
+
+## Adding a custom bench type
+
+```lua
+types = {
+    medical = {
+        label      = 'Medical Bench',
+        model      = 'prop_drug_package_02',
+        spawnRange = 30.0,
+        storage = {
+            slots     = 20,
+            maxWeight = 75000,
+        },
+        placement = {
+            item       = 'bench_medical',
+            returnItem = true,
+        },
+        recipes = {
+            {
+                name        = 'medikit',
+                ingredients = { scrapmetal = 8, WEAPON_HAMMER = 0.05 },
+                duration    = 6000,
+                count       = 1,
+                xp          = { required = 0, reward = 10 },
+            },
+        }
+    }
+}
+```
+
+## Pre-placed bench locations
+
+Fixed server-defined benches that players cannot move go in the `benches` array:
+
+```lua
+benches = {
+    {
+        name   = 'workshop',
+        type   = 'advanced',
+        groups = { mechanic = 0 },
+        points = {
+            vec3(-1152.95, -2002.26, 12.18),
+        },
+        zones = {
+            {
+                coords   = vec3(-1152.95, -2002.26, 12.18),
+                size     = vec3(3.8, 1.05, 0.15),
+                distance = 1.5,
+                rotation = 315.01,
+            },
+        },
+        blip = { id = 566, colour = 31, scale = 0.8 },
+    }
+}
+```
+
+| Key | Description |
+| --- | --- |
+| `name` | Unique identifier |
+| `type` | Bench type key from `types` |
+| `groups` | Job access map `{ jobName = minimumGrade }`. Empty table = any player |
+| `points` | World positions where the bench model spawns |
+| `zones` | ox_target interaction zone at each point |
+| `blip` | Map blip config (`id`, `colour`, `scale`) |
+
+## Source
+
+- [Crafting System (GitBook)](https://tqrpinvv2.gitbook.io/tqrpinvv2/tqrpinvv2-ox-inventory-rework-v2/crafting-system)

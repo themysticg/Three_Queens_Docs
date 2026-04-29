@@ -1,0 +1,93 @@
+---
+title: UI Themes
+description: Change themes, view available themes, and create custom UI themes.
+---
+
+## Changing the theme
+
+Open `data/ui.lua` and change the `activeTheme` value:
+
+```lua
+local activeTheme = "lime"
+```
+
+Restart the resource after saving.
+
+## Available themes
+
+30 themes are included:
+
+| | | | | |
+| --- | --- | --- | --- | --- |
+| `lime` | `emerald` | `blue` | `purple` | `rose` |
+| `orange` | `yellow` | `cyan` | `pink` | `silver` |
+| `red` | `teal` | `indigo` | `violet` | `amber` |
+| `sky` | `fuchsia` | `green` | `gold` | `slate` |
+| `coral` | `mint` | `lavender` | `crimson` | `turquoise` |
+| `maroon` | `bronze` | `electric` | `neon` | `blood` |
+
+## Theme variables
+
+Each theme overrides a set of CSS custom properties applied to the root element:
+
+| Variable | Controls |
+| --- | --- |
+| `--color-primary` | Main accent colour |
+| `--color-primary-dark` | Darker shade of accent |
+| `--color-primary-deep` | Deep background tint |
+| `--color-body-scan` | Body scan animation line colour |
+| `--color-slot-border-hover` | Slot border on mouse hover |
+| `--color-tab-active-border` | Active category tab underline |
+| `--color-tab-active-bg` | Active tab background fill |
+| `--color-menu-highlight` | Context menu highlighted row |
+| `--accent` | Full-opacity accent (buttons, badges) |
+| `--accent-label` | Item name label colour |
+| `--drag-border` | Border colour while dragging an item |
+| `--slot-hover-border` | Slot border on hover (empty slots) |
+| `--slot-has-item-border` | Slot border when containing an item |
+| `--accent-glow-28` | Glow at 28% opacity |
+| `--accent-glow-08` | Glow at 8% opacity |
+| `--accent-grad-35` | Gradient stop at 35% opacity |
+| `--accent-grad-16` | Gradient stop at 16% opacity |
+| `--accent-grad-0` | Transparent gradient stop |
+
+## Creating a custom theme
+
+Add a new key to the `themes` table in `data/ui.lua` and set `activeTheme` to match:
+
+```lua
+local activeTheme = "forest"
+
+local themes = {
+    forest = {
+        ["--color-primary"]           = "#2d6a4f",
+        ["--color-primary-rgb"]       = "45, 106, 79",
+        ["--color-primary-dark"]      = "#1b4332",
+        ["--color-primary-dark-rgb"]  = "27, 67, 50",
+        ["--color-primary-deep"]      = "#081c15",
+        ["--color-primary-deep-rgb"]  = "8, 28, 21",
+        ["--color-body-scan"]         = "#52b788",
+        ["--color-slot-border-hover"] = "#2d6a4f",
+        ["--color-tab-active-border"] = "#2d6a4f",
+        ["--color-tab-active-bg"]     = "#1b4332",
+        ["--color-tab-active-bg-rgb"] = "27, 67, 50",
+        ["--color-menu-highlight"]    = "#52b788",
+        ["--color-menu-highlight-rgb"]= "82, 183, 136",
+        ["--accent"]                  = "rgba(45, 106, 79, 1)",
+        ["--accent-lime"]             = "#52b788",
+        ["--accent-label"]            = "#95d5b2",
+        ["--drag-border"]             = "#95d5b2",
+        ["--slot-hover-border"]       = "#2d4a3e",
+        ["--slot-has-item-border"]    = "#2a4038",
+        ["--accent-glow-28"]          = "rgba(45, 106, 79, 0.28)",
+        ["--accent-glow-08"]          = "rgba(45, 106, 79, 0.08)",
+        ["--accent-grad-35"]          = "rgba(45, 106, 79, 0.35)",
+        ["--accent-grad-16"]          = "rgba(45, 106, 79, 0.16)",
+        ["--accent-grad-0"]           = "rgba(45, 106, 79, 0)",
+    },
+}
+```
+
+## Source
+
+- [UI Themes (GitBook)](https://tqrpinvv2.gitbook.io/tqrpinvv2/tqrpinvv2-ox-inventory-rework-v2/ui-themes)

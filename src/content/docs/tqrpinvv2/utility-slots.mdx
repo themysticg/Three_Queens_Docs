@@ -1,0 +1,121 @@
+---
+title: Utility Slots
+description: Configure utility slots, armor items, backpack inventories, and slot behavior.
+---
+
+## Default slot assignment
+
+| Slot | Label | Accepted items |
+| --- | --- | --- |
+| 1 | Vest | `armour`, `heavyarmour` |
+| 2 | Backpack | `backpack_small`, `backpack_medium`, `backpack_large` |
+| 3 | Phone | `phone` |
+| 4 | Parachute | `parachute` |
+| 5 | Pocket | `pocket` |
+| 6 | Tablet | `tablet` |
+| 7 | Keys | `keys` |
+| 8 | Radio | `radio` |
+
+To change which items are accepted by a slot, edit `items[n]` in `data/utility.lua`.
+
+## Armor system
+
+Slot 1 accepts armor items. Two types are configured by default:
+
+| Item | Protection | Job restriction | Plates |
+| --- | --- | --- | --- |
+| `armour` | 50 | None — any player | 2 |
+| `heavyarmour` | 100 | Restricted to configured jobs | 5 |
+
+### Repair
+
+```lua
+armorRepairItems = {
+    armor_repair_kit = 20,
+    armor_plates     = 20,
+}
+```
+
+### Adding a new armor type
+
+```lua
+armorItems = {
+    tactical_vest = {
+        value  = 75,
+        jobs   = { 'swat' },   -- empty table = no restriction
+        plates = 3,
+    }
+}
+```
+
+Add the new item name to `items[1]` so the vest slot accepts it, and define it in `data/items.lua`.
+
+## Backpack system
+
+Slot 2 accepts backpack items. Each backpack opens as a **separate inventory** with its own slot count and weight limit when equipped.
+
+### Default backpacks
+
+| Item | Slots | Max weight |
+| --- | --- | --- |
+| `backpack_small` | 50 | 50,000g |
+| `backpack_medium` | 20 | 100,000g |
+| `backpack_large` | 30 | 150,000g |
+
+### Configuration
+
+```lua
+backpackItems = {
+    backpack_small = {
+        slots     = 50,
+        weight    = 50000,
+        blacklist = { 'backpack_small', 'backpack_medium', 'backpack_large' },
+        component = { drawable = 40, texture = 0 },
+    },
+}
+```
+
+| Key | Description |
+| --- | --- |
+| `slots` | Number of inventory slots inside the backpack |
+| `weight` | Maximum carry weight in grams |
+| `blacklist` | Items that cannot be placed inside (prevents backpack-in-backpack) |
+| `component` | Ped component applied when the backpack is equipped |
+
+### Visual component
+
+When `enableBackpackComponents = true`, equipping a backpack attaches the configured prop drawable to the player's Bag component.
+
+Set to `false` to disable the visual entirely.
+
+### Lock on removal
+
+```lua
+lockBackpackRemovalWithItems = true
+```
+
+Prevents removing the backpack while it still contains items. The player must empty it first.
+
+## Changing slot count
+
+Increase or decrease `slots` and update `items`, `labels` and `icons` to match:
+
+```lua
+slots = 6,
+items = {
+    [1] = { 'armour', 'heavyarmour' },
+    [2] = { 'backpack_small', 'backpack_medium', 'backpack_large' },
+    [3] = { 'phone' },
+    [4] = { 'parachute' },
+    [5] = { 'pocket' },
+    [6] = { 'tablet' },
+},
+```
+
+## Disabling utility slots
+
+Set `enabled = false` in `data/utility.lua`. The panel will not render and no reserved slots will be created.
+
+## Source
+
+- [Utility Slots (GitBook)](https://tqrpinvv2.gitbook.io/tqrpinvv2/tqrpinvv2-ox-inventory-rework-v2/utility-slots)

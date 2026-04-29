@@ -1,0 +1,84 @@
+---
+title: Storage System
+description: Storage types, custom storage configuration, and pre-placed storage units.
+---
+
+## Storage types
+
+Three types are available by default:
+
+| Type | Model | Slots | Max weight | Placement item |
+| --- | --- | --- | --- | --- |
+| `small` | `prop_box_wood05a` | 20 | 50,000g | `storage_small` |
+| `medium` | `prop_mp_num_crate_01a` | 35 | 100,000g | `storage_medium` |
+| `large` | `prop_gs_safe_01` | 50 | 200,000g | `storage_large` |
+
+## Adding a custom storage type
+
+```lua
+types = {
+    vault = {
+        label = 'Bank Vault',
+        model = 'prop_vault_door',
+        spawnRange = 25.0,
+        storage = {
+            slots     = 100,
+            maxWeight = 500000,
+        },
+        placement = {
+            item       = 'storage_vault',
+            returnItem = false,
+        },
+    }
+}
+```
+
+## Pre-placed storage units
+
+Server-defined units that cannot be moved by players go in the `units` array:
+
+```lua
+units = {
+    {
+        name   = 'police_station_safe',
+        type   = 'large',
+        label  = 'Evidence Safe',
+        groups = { police = 0 },
+        points = {
+            vec3(457.26, -987.11, 30.69),
+        },
+        blip = { id = 473, colour = 29, scale = 0.7 },
+    }
+}
+```
+
+| Key | Description |
+| --- | --- |
+| `name` | Unique identifier — also used as the inventory ID in the database |
+| `type` | Storage type key from `types` |
+| `label` | Display name shown when opening |
+| `groups` | Job access map `{ jobName = minimumGrade }`. Empty table = any player |
+| `points` | World positions where the model spawns |
+| `blip` | Map blip config (`id`, `colour`, `scale`) |
+
+### Default pre-placed units
+
+| Name | Type | Label | Job access |
+| --- | --- | --- | --- |
+| `general_store_storage` | small | General Store Storage | `shopkeeper` grade 0+ |
+| `pillbox_medical_storage` | medium | Medical Supplies | `ambulance` grade 0+ |
+| `police_station_safe` | large | Evidence Safe | `police` grade 0+ |
+
+## Job access
+
+The `groups` field follows the standard format used throughout ox_lib:
+
+```lua
+groups = { police = 0, sheriff = 2 }
+```
+
+This means: police at grade 0 or above **or** sheriff at grade 2 or above can open this storage. An empty `{}` allows any player.
+
+## Source
+
+- [Storage System (GitBook)](https://tqrpinvv2.gitbook.io/tqrpinvv2/tqrpinvv2-ox-inventory-rework-v2/storage-system)

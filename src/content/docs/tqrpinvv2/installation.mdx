@@ -1,0 +1,56 @@
+---
+title: Installation
+description: Dependencies, load order, and first-time setup for Prodigy RP Ox Inventory Rework v2.
+---
+
+## Dependencies
+
+| Resource | Where to get |
+| --- | --- |
+| **ox_lib** | [ox_lib releases](https://github.com/CommunityOx/ox_lib/releases/tag/v3.32.3) |
+| **oxmysql** | [oxmysql releases](https://github.com/overextended/oxmysql/releases/tag/v2.12.0) |
+| **dm-throwitems** | Cfx.re asset portal |
+| **object_gizmo** | [Object Gizmo releases](https://github.com/DemiAutomatic/object_gizmo/releases/tag/v2.1.0) |
+
+> Prodigy RP Inventory is downloaded directly from your **Tebex** purchase receipt, which links to the Cfx.re asset portal.
+
+## `server.cfg` load order
+
+Resources must start in this order:
+
+```txt
+ensure oxmysql
+ensure ox_lib
+ensure ox_inventory
+ensure dm-throwitems
+ensure object_gizmo
+```
+
+## First-time setup
+
+1. **Items** — Add your item definitions to `data/items.lua`. Every item used on your server must have an entry here.
+2. **Config files** — Review and edit all files in `data/`:
+
+   | File | Purpose |
+   | --- | --- |
+   | `clothing.lua` | Clothing slot layout and drawables |
+   | `rarity.lua` | Rarity tier colours and animations |
+   | `utility.lua` | Utility slot items, armor values, backpack capacities |
+   | `crafting.lua` | Bench types, recipes and XP rewards |
+   | `storage.lua` | Storage types and pre-placed units |
+   | `shops.lua` | Shop inventories, locations and target zones |
+   | `ui.lua` | Active colour theme |
+
+3. **Start the server** and open a player inventory to confirm the UI loads correctly.
+
+## Framework compatibility
+
+Prodigy RP Inventory uses the **ox_lib bridge** layer for framework calls (jobs, player data, notifications, etc.). It is compatible out of the box with:
+
+- **ESX**
+- **QBox**
+- **QBCore**
+
+## Source
+
+- [Installation (GitBook)](https://tqrpinvv2.gitbook.io/tqrpinvv2/tqrpinvv2-ox-inventory-rework-v2/installation)
